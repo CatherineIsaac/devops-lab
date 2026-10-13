@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         body = b"Hello from my DevOps application!\n"
@@ -9,6 +10,8 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-server = HTTPServer(("0.0.0.0", 8000), Handler)
-print("Server listening on port 8000", flush=True)
-server.serve_forever()
+
+if __name__ == "__main__":
+    server = HTTPServer(("0.0.0.0", 8000), Handler)
+    print("Server listening on port 8000", flush=True)
+    server.serve_forever()

@@ -17,6 +17,14 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run automated unit tests
+        run: python -m unittest -v test_app.py
+
       - name: Build Docker image
         run: docker build -t hello-devops:ci .
 
@@ -26,12 +34,17 @@ jobs:
       - name: Test HTTP response
         run: |
           for i in $(seq 1 10); do
-            if curl --fail --silent http://localhost:8000; then
-              echo "Application test passed"
+            if curl --fail --silent http://localhost:8000/; then
+              echo
+              echo "Application HTTP test passed"
               exit 0
             fi
             sleep 2
           done
-          echo "Application test failed"
+          echo "Application HTTP test failed"
           docker logs hello-devops-ci
           exit 1
+
+      - name: Clean up container
+        if: always()
+        run: docker rm -f hello-devops-ci || true
