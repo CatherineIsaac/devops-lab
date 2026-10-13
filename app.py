@@ -18,7 +18,7 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    host = os.getenv("APP_HOST", "0.0.0.0")
+    host = os.getenv("APP_HOST", "0.0.0.0")  # nosec B104 - required for Docker container networking
     port = int(os.getenv("APP_PORT", "8000"))
 
     server = HTTPServer((host, port), Handler)
